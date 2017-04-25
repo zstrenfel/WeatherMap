@@ -19,6 +19,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var locationManager: CLLocationManager!
     var weatherCells = ["Springfield", "Somewhere"];
+    let REGION_RADIUS: CLLocationDistance = 1000
     
     //MARK: - Initialization
     override func viewDidLoad() {
@@ -27,8 +28,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+
+        locationManager.requestLocation()
     }
     
+    //MARK: - Map View
+    func centerMapOnLocation(location: CLLocation) {
+        log.debug(location)
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, REGION_RADIUS * 2, REGION_RADIUS * 2)
+        mapView.setRegion(coordinateRegion, animated: true)
+        
+    }
     
     //MARK: - Table View Data Source
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -57,7 +67,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        log.info(locations)
+        guard let location = locations.first else {
+            log.error("no location information given")
+            return
+        }
+        centerMapOnLocation(location: location)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
