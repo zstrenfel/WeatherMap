@@ -13,6 +13,7 @@
 		929E2D651EAFDB1200697B0E /* WeatherMap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 929E2D631EAFDB1200697B0E /* WeatherMap.xcdatamodeld */; };
 		929E2D671EAFDB1200697B0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 929E2D661EAFDB1200697B0E /* Assets.xcassets */; };
 		929E2D6A1EAFDB1200697B0E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929E2D681EAFDB1200697B0E /* LaunchScreen.storyboard */; };
+		929E2D721EAFED4000697B0E /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929E2D711EAFED4000697B0E /* ApiManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		929E2D661EAFDB1200697B0E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		929E2D691EAFDB1200697B0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		929E2D6B1EAFDB1200697B0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		929E2D711EAFED4000697B0E /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				929E2D681EAFDB1200697B0E /* LaunchScreen.storyboard */,
 				929E2D6B1EAFDB1200697B0E /* Info.plist */,
 				929E2D631EAFDB1200697B0E /* WeatherMap.xcdatamodeld */,
+				929E2D711EAFED4000697B0E /* ApiManager.swift */,
 			);
 			path = WeatherMap;
 			sourceTree = "<group>";
@@ -139,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				929E2D721EAFED4000697B0E /* ApiManager.swift in Sources */,
 				929E2D5F1EAFDB1200697B0E /* ViewController.swift in Sources */,
 				929E2D651EAFDB1200697B0E /* WeatherMap.xcdatamodeld in Sources */,
 				929E2D5D1EAFDB1200697B0E /* AppDelegate.swift in Sources */,
