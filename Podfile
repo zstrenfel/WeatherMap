@@ -8,5 +8,7 @@ target 'WeatherMap' do
   # Pods for WeatherMap
   pod 'Alamofire', '~> 4.4’
   pod 'ObjectMapper', '~> 2.2'
+  pod 'XCGLogger', '~> 5.0.1'
+
 
 end

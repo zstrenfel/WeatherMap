@@ -78,12 +78,12 @@
 			children = (
 				929E2D731EAFF85F00697B0E /* Controllers */,
 				929E2D5C1EAFDB1200697B0E /* AppDelegate.swift */,
+				929E2D711EAFED4000697B0E /* ApiManager.swift */,
 				929E2D601EAFDB1200697B0E /* Main.storyboard */,
 				929E2D661EAFDB1200697B0E /* Assets.xcassets */,
 				929E2D681EAFDB1200697B0E /* LaunchScreen.storyboard */,
 				929E2D6B1EAFDB1200697B0E /* Info.plist */,
 				929E2D631EAFDB1200697B0E /* WeatherMap.xcdatamodeld */,
-				929E2D711EAFED4000697B0E /* ApiManager.swift */,
 			);
 			path = WeatherMap;
 			sourceTree = "<group>";
