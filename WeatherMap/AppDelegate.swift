@@ -10,11 +10,12 @@ import UIKit
 import CoreData
 import XCGLogger
 
+let log = XCGLogger.default
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let log = XCGLogger.default
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {

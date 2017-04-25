@@ -76,7 +76,8 @@
 		929E2D5B1EAFDB1200697B0E /* WeatherMap */ = {
 			isa = PBXGroup;
 			children = (
-				929E2D731EAFF85F00697B0E /* Controllers */,
+				929E2D5E1EAFDB1200697B0E /* ViewController.swift */,
+				929E2D741EAFF88400697B0E /* WeatherHistoryTableViewCell.swift */,
 				929E2D5C1EAFDB1200697B0E /* AppDelegate.swift */,
 				929E2D711EAFED4000697B0E /* ApiManager.swift */,
 				929E2D601EAFDB1200697B0E /* Main.storyboard */,
@@ -86,15 +87,6 @@
 				929E2D631EAFDB1200697B0E /* WeatherMap.xcdatamodeld */,
 			);
 			path = WeatherMap;
-			sourceTree = "<group>";
-		};
-		929E2D731EAFF85F00697B0E /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				929E2D5E1EAFDB1200697B0E /* ViewController.swift */,
-				929E2D741EAFF88400697B0E /* WeatherHistoryTableViewCell.swift */,
-			);
-			name = Controllers;
 			sourceTree = "<group>";
 		};
 		D163C0D8E2015E3A1987A173 /* Frameworks */ = {
