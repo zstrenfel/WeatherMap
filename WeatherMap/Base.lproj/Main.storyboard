@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -28,15 +29,35 @@
                                 <rect key="frame" x="0.0" y="343.5" width="375" height="323.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="11A-ab-fVd">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="weatherHistoryCell" id="11A-ab-fVd" customClass="WeatherHistoryTableViewCell" customModule="WeatherMap" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="11A-ab-fVd" id="2k9-lZ-6GP">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rns-rr-P8C">
+                                                    <rect key="frame" x="8" y="8" width="66" height="27.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Rns-rr-P8C" firstAttribute="top" secondItem="2k9-lZ-6GP" secondAttribute="topMargin" id="AzT-Ki-Uon"/>
+                                                <constraint firstItem="Rns-rr-P8C" firstAttribute="leading" secondItem="2k9-lZ-6GP" secondAttribute="leadingMargin" id="axG-NO-6vR"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Rns-rr-P8C" secondAttribute="bottom" id="zRm-0T-piN"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="locationLabel" destination="Rns-rr-P8C" id="ESv-M1-W99"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="n1r-CF-Fz5"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="gQ6-7l-PvO"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -51,6 +72,10 @@
                             <constraint firstItem="gy6-c1-EZb" firstAttribute="height" secondItem="Fa0-Av-EJs" secondAttribute="height" id="z3h-VF-fkw"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="Fa0-Av-EJs" id="E3l-xZ-LRI"/>
+                        <outlet property="tableView" destination="gy6-c1-EZb" id="wOa-c4-7Q8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
