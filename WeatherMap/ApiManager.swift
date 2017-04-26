@@ -10,7 +10,6 @@ import Foundation
 import MapKit
 
 class ApiManager {
-    
     static let shared = ApiManager()
     
     fileprivate let HOST = "http://api.openweathermap.org"
@@ -26,9 +25,14 @@ class ApiManager {
         let url = URL(string: HOST + baseURL + queryString)
         let request = URLRequest(url: url!)
         let task = defaultSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            log.debug(data)
-            log.debug(response)
-            log.debug(error)
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode != 200 {
+                    log.error(error)
+                } else {
+                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+                    log.info(json)
+                }
+            }
         })
         task.resume()
     }
