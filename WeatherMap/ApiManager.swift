@@ -18,19 +18,21 @@ class ApiManager {
     //Using Open Weather API
     fileprivate let API_KEY = "77f5a3424a8711343cbb3094bc8337d3"
     
+    typealias completionHandler = ((Bool, Any?) -> Void)
     
-    func getWeather(for coordinate: CLLocationCoordinate2D) {
+    func getWeather(for coordinate: CLLocationCoordinate2D, onComplete: @escaping completionHandler) {
         let queryString = "lat=\(Int(coordinate.latitude))&lon=\(Int(coordinate.longitude))&APPID=\(API_KEY)"
         
         let url = URL(string: HOST + baseURL + queryString)
         let request = URLRequest(url: url!)
         let task = defaultSession.dataTask(with: request, completionHandler: { (data, response, error) in
+            var json: Any? = nil
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode != 200 {
-                    log.error(error)
+                    onComplete(false, json)
                 } else {
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
-                    log.info(json)
+                    json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments)
+                    onComplete(true, json)
                 }
             }
         })

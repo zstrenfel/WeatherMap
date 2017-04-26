@@ -36,7 +36,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, REGION_RADIUS, REGION_RADIUS)
         mapView.setRegion(coordinateRegion, animated: true)
-        ApiManager.shared.getWeather(for: location.coordinate)
+        ApiManager.shared.getWeather(for: location.coordinate, onComplete: <#ApiManager.completionHandler#>)
+    }
+    
+    func gotWeather(success: Bool, data: Any) {
+        
     }
     
     //MARK: - Table View Data Source
