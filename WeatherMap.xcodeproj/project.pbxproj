@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		66A6DD80A37826BEF5552763 /* Pods_WeatherMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB99DB69FCF12D1AAA4762DC /* Pods_WeatherMap.framework */; };
+		9235CDF51EB113450064D111 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9235CDF41EB113450064D111 /* Weather.swift */; };
 		929E2D5D1EAFDB1200697B0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929E2D5C1EAFDB1200697B0E /* AppDelegate.swift */; };
 		929E2D5F1EAFDB1200697B0E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929E2D5E1EAFDB1200697B0E /* ViewController.swift */; };
 		929E2D621EAFDB1200697B0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929E2D601EAFDB1200697B0E /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		310F6AF2CD3C6BBFBABCF432 /* Pods-WeatherMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeatherMap/Pods-WeatherMap.release.xcconfig"; sourceTree = "<group>"; };
+		9235CDF41EB113450064D111 /* Weather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		929E2D591EAFDB1200697B0E /* WeatherMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		929E2D5C1EAFDB1200697B0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		929E2D5E1EAFDB1200697B0E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				929E2D741EAFF88400697B0E /* WeatherHistoryTableViewCell.swift */,
 				929E2D5C1EAFDB1200697B0E /* AppDelegate.swift */,
 				929E2D711EAFED4000697B0E /* ApiManager.swift */,
+				9235CDF41EB113450064D111 /* Weather.swift */,
 				929E2D601EAFDB1200697B0E /* Main.storyboard */,
 				929E2D661EAFDB1200697B0E /* Assets.xcassets */,
 				929E2D681EAFDB1200697B0E /* LaunchScreen.storyboard */,
@@ -224,6 +227,7 @@
 				929E2D751EAFF88400697B0E /* WeatherHistoryTableViewCell.swift in Sources */,
 				929E2D5F1EAFDB1200697B0E /* ViewController.swift in Sources */,
 				929E2D651EAFDB1200697B0E /* WeatherMap.xcdatamodeld in Sources */,
+				9235CDF51EB113450064D111 /* Weather.swift in Sources */,
 				929E2D5D1EAFDB1200697B0E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -14,11 +14,12 @@ import XCGLogger
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate {
 
     //MARK: - Properties
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
     
     var locationManager: CLLocationManager!
-    var weatherCells = ["Springfield", "Somewhere"];
+    var weatherCells = ["Springfield", "Somewhere"]
     let REGION_RADIUS: CLLocationDistance = 1000
     
     //MARK: - Initialization
@@ -33,17 +34,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     //MARK: - Map View
+    
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, REGION_RADIUS, REGION_RADIUS)
         mapView.setRegion(coordinateRegion, animated: true)
-        ApiManager.shared.getWeather(for: location.coordinate, onComplete: <#ApiManager.completionHandler#>)
+        ApiManager.shared.getWeather(for: location.coordinate, onComplete: handleWeatherInfo)
     }
     
-    func gotWeather(success: Bool, data: Any) {
-        
+    func handleWeatherInfo(success: Bool,info: WeatherInfo?) {
+        log.debug(info)
     }
     
     //MARK: - Table View Data Source
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -63,6 +66,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     //MARK: - Location Manager Delegate
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
             locationManager.requestLocation()
