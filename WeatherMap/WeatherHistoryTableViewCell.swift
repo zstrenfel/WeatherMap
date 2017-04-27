@@ -11,6 +11,12 @@ import UIKit
 class WeatherHistoryTableViewCell: UITableViewCell {
 
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var weatherLabel: UILabel!
+    @IBOutlet weak var tempLabel: UILabel!
+    @IBOutlet weak var humidityLabel: UILabel!
+    
+    var lat: Double? = nil
+    var lon: Double? = nil
     
     override func awakeFromNib() {
         super.awakeFromNib()

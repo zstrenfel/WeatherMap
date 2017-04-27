@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -39,21 +38,52 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rns-rr-P8C">
-                                                    <rect key="frame" x="8" y="8" width="66" height="27.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Q0l-Vf-xO3">
+                                                    <rect key="frame" x="0.0" y="0.0" width="183" height="43.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rns-rr-P8C">
+                                                            <rect key="frame" x="0.0" y="0.0" width="183" height="22.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="OHp-LU-bX1">
+                                                            <rect key="frame" x="0.0" y="26.5" width="183" height="17"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weather" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1sv-3h-G4P">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="54.5" height="17"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Degrees" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvV-ht-gBO">
+                                                                    <rect key="frame" x="62.5" y="0.0" width="54.5" height="17"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Humidity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOn-bI-F1H">
+                                                                    <rect key="frame" x="125" y="0.0" width="58" height="17"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Rns-rr-P8C" firstAttribute="top" secondItem="2k9-lZ-6GP" secondAttribute="topMargin" id="AzT-Ki-Uon"/>
-                                                <constraint firstItem="Rns-rr-P8C" firstAttribute="leading" secondItem="2k9-lZ-6GP" secondAttribute="leadingMargin" id="axG-NO-6vR"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Rns-rr-P8C" secondAttribute="bottom" id="zRm-0T-piN"/>
+                                                <constraint firstItem="Q0l-Vf-xO3" firstAttribute="leading" secondItem="2k9-lZ-6GP" secondAttribute="leading" id="7PZ-Ai-I3f"/>
+                                                <constraint firstItem="Q0l-Vf-xO3" firstAttribute="top" secondItem="2k9-lZ-6GP" secondAttribute="top" id="HLh-Ge-uDC"/>
+                                                <constraint firstAttribute="bottom" secondItem="Q0l-Vf-xO3" secondAttribute="bottom" id="zjp-6I-U5F"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="humidityLabel" destination="SOn-bI-F1H" id="own-2A-aPi"/>
                                             <outlet property="locationLabel" destination="Rns-rr-P8C" id="ESv-M1-W99"/>
+                                            <outlet property="tempLabel" destination="rvV-ht-gBO" id="rQe-eo-6Na"/>
+                                            <outlet property="weatherLabel" destination="1sv-3h-G4P" id="jLl-ci-l38"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
