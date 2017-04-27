@@ -44,7 +44,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, REGION_RADIUS, REGION_RADIUS)
         mapView.setRegion(coordinateRegion, animated: true)
-        ApiManager.shared.getWeather(for: location.coordinate, onComplete: self.handleWeatherInfo)
+        ApiManager.shared.getWeather(for: location.coordinate, units: .imperial, onComplete: self.handleWeatherInfo)
     }
     
     func handleWeatherInfo(success: Bool,info: Weather?) {
@@ -52,6 +52,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: (self.locationManager.location?.coordinate)!)
             DispatchQueue.main.async {
                 self.mapView.addAnnotation(annotation)
+                self.mapView.selectAnnotation(self.mapView.annotations[0], animated: true)
             }
             
         }
@@ -70,8 +71,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 view.canShowCallout = true
                 view.calloutOffset = CGPoint(x: -5, y: 5)
             }
-            view.isSelected = true
-            view.isHighlighted = true
             return view
         }
         return nil
