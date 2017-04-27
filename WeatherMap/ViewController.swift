@@ -34,7 +34,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-
         locationManager.requestLocation()
         
         mapView.delegate = self
@@ -44,11 +43,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, REGION_RADIUS, REGION_RADIUS)
         mapView.setRegion(coordinateRegion, animated: true)
-        ApiManager.shared.getWeather(for: location.coordinate, units: .imperial, onComplete: self.handleWeatherInfo)
+        self.getWeatherInfo(location: location)
     }
     
-    func handleWeatherInfo(success: Bool, info: Weather?) {
-        if let weather = info {
+    func getWeatherInfo(location: CLLocation) {
+        var params: [String: Any] = [:]
+        params["lat"] = location.coordinate.latitude
+        params["lon"] = location.coordinate.longitude
+        params["units"] = Units.imperial.rawValue
+        
+        ApiManager.shared.getWeather(with: params, onComplete: self.handleWeatherInfo)
+    }
+    
+    func handleWeatherInfo(success: Bool, data: Any?) {
+        if let weather = data as? Weather {
             let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: (self.locationManager.location?.coordinate)!)
             DispatchQueue.main.async {
                 self.mapView.addAnnotation(annotation)

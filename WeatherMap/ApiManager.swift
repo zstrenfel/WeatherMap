@@ -24,17 +24,6 @@ class ApiManager {
     
     typealias CompletionHandler = (Bool, Any?) -> Void
     
-    func parametersToQueryString(with params: [String: Any]) -> String {
-        var query = ""
-        for (i, key) in params.keys.enumerated() {
-            let val = String(describing: params[key])
-            query += i == 0 ? "?" : "&"
-            query += "\(key)=\(val)"
-        }
-        query += "&APPID=\(API_KEY)"
-        return query
-    }
-    
     func getWeather(with params: [String: Any], onComplete: @escaping CompletionHandler) {
         let baseURL = "/data/2.5/weather"
         let query = self.parametersToQueryString(with: params)
@@ -45,7 +34,18 @@ class ApiManager {
         
     }
     
-    func dataTask(for request: URLRequest, onComplete: @escaping CompletionHandler) {
+    fileprivate func parametersToQueryString(with params: [String: Any]) -> String {
+        var query = ""
+        for (i, key) in params.keys.enumerated() {
+            let val = params[key]
+            query += i == 0 ? "?" : "&"
+            query += "\(key)=\(val!)"
+        }
+        query += "&APPID=\(API_KEY)"
+        return query
+    }
+    
+    fileprivate func dataTask(for request: URLRequest, onComplete: @escaping CompletionHandler) {
         let session = URLSession(configuration: .default)
         session.dataTask(with: request, completionHandler: { (data, response, error) in
             if let httpResponse = response as? HTTPURLResponse {
