@@ -10,8 +10,8 @@ import Foundation
 import ObjectMapper
 
 class Weather: Mappable {
-    var lat: Int?
-    var lon: Int?
+    var lat: Double?
+    var lon: Double?
     var weather: String? 
     var temp: Float?
     var name: String?

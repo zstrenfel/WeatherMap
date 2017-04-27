@@ -26,6 +26,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var weatherHistory: [String:[WeatherHistory]] = [:]
     var sections: [String] = []
     
+    let IS_ADMIN = true
+    
     //MARK: - Initialization
     
     override func viewDidLoad() {
@@ -41,6 +43,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.tableFooterView = UIView()
         
         fetchWeatherHistory()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
     
     func fetchWeatherHistory() {
@@ -158,7 +165,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     //MARK: - Location Manager Delegate
-    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
             locationManager.requestLocation()
@@ -175,6 +181,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         log.error(error)
+    }
+    
+    // MARK: - Actions
+    override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if IS_ADMIN {
+            self.performSegue(withIdentifier: "showAdmin", sender: nil)
+        }
     }
 }
 
