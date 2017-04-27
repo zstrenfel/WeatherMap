@@ -47,7 +47,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         ApiManager.shared.getWeather(for: location.coordinate, units: .imperial, onComplete: self.handleWeatherInfo)
     }
     
-    func handleWeatherInfo(success: Bool,info: Weather?) {
+    func handleWeatherInfo(success: Bool, info: Weather?) {
         if let weather = info {
             let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: (self.locationManager.location?.coordinate)!)
             DispatchQueue.main.async {

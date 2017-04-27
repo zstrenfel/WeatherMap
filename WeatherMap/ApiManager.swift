@@ -20,18 +20,33 @@ class ApiManager {
     static let shared = ApiManager()
     
     fileprivate let HOST = "http://api.openweathermap.org"
-    fileprivate let baseURL = "/data/2.5/weather?"
-    //Using Open Weather API
     fileprivate let API_KEY = "77f5a3424a8711343cbb3094bc8337d3"
     
+    typealias CompletionHandler = (Bool, Any?) -> Void
     
-    func getWeather(for coordinates: CLLocationCoordinate2D, units: Units, onComplete: @escaping (Bool, Weather?) -> Void) {
-        let session = URLSession(configuration: .default)
-        let queryString = "lat=\(coordinates.latitude)&lon=\(coordinates.longitude)&APPID=\(API_KEY)&units=\(units.rawValue)"
-        
-        let url = URL(string: HOST + baseURL + queryString)
+    func parametersToQueryString(with params: [String: Any]) -> String {
+        var query = ""
+        for (i, key) in params.keys.enumerated() {
+            let val = String(describing: params[key])
+            query += i == 0 ? "?" : "&"
+            query += "\(key)=\(val)"
+        }
+        query += "&APPID=\(API_KEY)"
+        return query
+    }
+    
+    func getWeather(with params: [String: Any], onComplete: @escaping CompletionHandler) {
+        let baseURL = "/data/2.5/weather"
+        let query = self.parametersToQueryString(with: params)
+        let url = URL(string: HOST + baseURL + query)
         let request = URLRequest(url: url!)
         
+        self.dataTask(for: request, onComplete: onComplete)
+        
+    }
+    
+    func dataTask(for request: URLRequest, onComplete: @escaping CompletionHandler) {
+        let session = URLSession(configuration: .default)
         session.dataTask(with: request, completionHandler: { (data, response, error) in
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode != 200 {
