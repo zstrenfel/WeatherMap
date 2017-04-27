@@ -2,6 +2,8 @@
 //  ViewController.swift
 //  WeatherMap
 //
+// MapKit Functionality based off of:https://www.raywenderlich.com/90971/introduction-mapkit-swift-tutorial
+//
 //  Created by Zach Strenfel on 4/25/17.
 //  Copyright © 2017 Zach Strenfel. All rights reserved.
 //
@@ -11,7 +13,7 @@ import MapKit
 import CoreLocation
 import XCGLogger
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, MKMapViewDelegate {
 
     //MARK: - Properties
     
@@ -20,7 +22,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var locationManager: CLLocationManager!
     var weatherCells = ["Springfield", "Somewhere"]
-    let REGION_RADIUS: CLLocationDistance = 1000
+    let REGION_RADIUS: CLLocationDistance = 2000
+    
+    var currentWeather: Weather? = nil {
+        didSet {
+            addWeatherLocationToMap(with: currentWeather!)
+        }
+    }
     
     //MARK: - Initialization
     override func viewDidLoad() {
@@ -31,10 +39,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         locationManager.requestWhenInUseAuthorization()
 
         locationManager.requestLocation()
+        
+        mapView.delegate = self
     }
     
-    //MARK: - Map View
-    
+    // MARK: Map View
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, REGION_RADIUS, REGION_RADIUS)
         mapView.setRegion(coordinateRegion, animated: true)
@@ -42,7 +51,35 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func handleWeatherInfo(success: Bool,info: Weather?) {
-        log.debug(info)
+        if let weather = info {
+            self.currentWeather = weather
+        }
+    }
+    
+    func addWeatherLocationToMap(with weather: Weather) {
+        let coordinate = CLLocationCoordinate2D(latitude: Double(weather.lat!), longitude: Double(weather.lon!))
+        let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: coordinate)
+        
+        self.mapView.addAnnotation(annotation)
+    }
+    
+    //MARK: - Map View Delegate
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? WeatherLocation {
+            let identifier = "pin"
+            var view: MKPinAnnotationView
+            if let dequeued = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+                dequeued.annotation = annotation
+                view = dequeued
+            } else {
+                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view.canShowCallout = true
+                view.isSelected = true
+                view.calloutOffset = CGPoint(x: -5, y: 5)
+            }
+            return view
+        }
+        return nil
     }
     
     //MARK: - Table View Data Source

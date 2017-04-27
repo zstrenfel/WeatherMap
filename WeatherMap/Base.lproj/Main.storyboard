@@ -24,6 +24,9 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Fa0-Av-EJs">
                                 <rect key="frame" x="0.0" y="20" width="375" height="323.5"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="euw-fL-WIr"/>
+                                </connections>
                             </mapView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gy6-c1-EZb">
                                 <rect key="frame" x="0.0" y="343.5" width="375" height="323.5"/>
