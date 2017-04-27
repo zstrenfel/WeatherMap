@@ -24,13 +24,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var weatherCells = ["Springfield", "Somewhere"]
     let REGION_RADIUS: CLLocationDistance = 2000
     
-    var currentWeather: Weather? = nil {
-        didSet {
-            addWeatherLocationToMap(with: currentWeather!)
-        }
-    }
-    
-    var currCoords: CLLocationCoordinate2D? = nil
+    var city: String? = nil
+    var countryCode: String? = nil
     
     //MARK: - Initialization
     override func viewDidLoad() {
@@ -49,20 +44,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, REGION_RADIUS, REGION_RADIUS)
         mapView.setRegion(coordinateRegion, animated: true)
-        ApiManager.shared.getWeather(for: location.coordinate, onComplete: handleWeatherInfo)
+        ApiManager.shared.getWeather(for: self.city!, countryCode: self.countryCode!, onComplete: handleWeatherInfo)
     }
     
     func handleWeatherInfo(success: Bool,info: Weather?) {
         if let weather = info {
-            self.currentWeather = weather
+            let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: (self.locationManager.location?.coordinate)!)
+            DispatchQueue.main.async {
+                self.mapView.addAnnotation(annotation)
+            }
+            
         }
-    }
-    
-    func addWeatherLocationToMap(with weather: Weather) {
-        let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: (locationManager.location?.coordinate)!)
-        
-        self.mapView.addAnnotation(annotation)
-        self.mapView.selectAnnotation(annotation, animated: true)
     }
     
     //MARK: - Map View Delegate
@@ -76,9 +68,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             } else {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 view.canShowCallout = true
-                view.isSelected = true
                 view.calloutOffset = CGPoint(x: -5, y: 5)
             }
+            view.isSelected = true
+            view.isHighlighted = true
             return view
         }
         return nil
@@ -117,12 +110,27 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             log.error("no location information given")
             return
         }
-        currCoords = location.coordinate
+        getLocationInformation(from: location)
         centerMapOnLocation(location: location)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         log.error(error)
+    }
+    
+    // MARK: - Utitlities
+    func getLocationInformation(from location: CLLocation) {
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
+            let placemark = placemarks?[0]
+            if let city = placemark?.locality {
+                self.city = city
+            }
+            
+            if let countryCode = placemark?.isoCountryCode {
+                self.countryCode = countryCode
+            }
+        })
     }
 }
 
