@@ -30,6 +30,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
+    var currCoords: CLLocationCoordinate2D? = nil
+    
     //MARK: - Initialization
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,10 +59,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func addWeatherLocationToMap(with weather: Weather) {
-        let coordinate = CLLocationCoordinate2D(latitude: Double(weather.lat!), longitude: Double(weather.lon!))
-        let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: coordinate)
+        let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: (locationManager.location?.coordinate)!)
         
         self.mapView.addAnnotation(annotation)
+        self.mapView.selectAnnotation(annotation, animated: true)
     }
     
     //MARK: - Map View Delegate
@@ -115,6 +117,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             log.error("no location information given")
             return
         }
+        currCoords = location.coordinate
         centerMapOnLocation(location: location)
     }
     
