@@ -44,6 +44,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func centerMapOnLocation(location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, REGION_RADIUS, REGION_RADIUS)
         mapView.setRegion(coordinateRegion, animated: true)
+        ApiManager.shared.getWeather(for: location.coordinate, onComplete: self.handleWeatherInfo)
     }
     
     func handleWeatherInfo(success: Bool,info: Weather?) {
@@ -109,20 +110,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             log.error("no location information given")
             return
         }
-        let geoCoder = CLGeocoder()
-        geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
-            let placemark = placemarks?[0]
-            log.debug(placemark?.addressDictionary)
-            if let city = placemark?.locality {
-                self.city = city
-            }
-            
-            if let countryCode = placemark?.isoCountryCode {
-                self.countryCode = countryCode
-            }
-            ApiManager.shared.getWeather(for: self.city!, countryCode: self.countryCode!, onComplete: self.handleWeatherInfo)
-        }
-//        getLocationInformation(from: location)
         centerMapOnLocation(location: location)
     }
     

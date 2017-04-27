@@ -20,9 +20,9 @@ class ApiManager {
     fileprivate let API_KEY = "77f5a3424a8711343cbb3094bc8337d3"
     
     
-    func getWeather(for city: String, countryCode: String, onComplete: @escaping (Bool, Weather?) -> Void) {
+    func getWeather(for coordinates: CLLocationCoordinate2D, onComplete: @escaping (Bool, Weather?) -> Void) {
         let session = URLSession(configuration: .default)
-        let queryString = "q=\(city),\(countryCode)&APPID=\(API_KEY)"
+        let queryString = "lat=\(coordinates.latitude)&lon=\(coordinates.longitude)&APPID=\(API_KEY)"
         
         let url = URL(string: HOST + baseURL + queryString)
         let request = URLRequest(url: url!)
