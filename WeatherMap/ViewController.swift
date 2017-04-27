@@ -47,8 +47,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        fetchWeatherHistory()
     }
+    
     
     func fetchWeatherHistory() {
         do {
@@ -101,6 +102,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func handleWeatherInfo(success: Bool, data: Any?) {
         if let weather = data as? Weather {
             let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, humidity: weather.humidity!, coordinate: (self.locationManager.location?.coordinate)!)
+            
+            if (self.mapView.annotations.count > 0) {
+                self.mapView.removeAnnotations(self.mapView.annotations)
+            }
+            
             self.mapView.addAnnotation(annotation)
             self.mapView.selectAnnotation(self.mapView.annotations[0], animated: true)
             self.saveWeatherHistory(for: weather)
