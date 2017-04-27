@@ -41,7 +41,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         ApiManager.shared.getWeather(for: location.coordinate, onComplete: handleWeatherInfo)
     }
     
-    func handleWeatherInfo(success: Bool,info: WeatherInfo?) {
+    func handleWeatherInfo(success: Bool,info: Weather?) {
         log.debug(info)
     }
     

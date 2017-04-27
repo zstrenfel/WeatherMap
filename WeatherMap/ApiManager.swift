@@ -20,7 +20,7 @@ class ApiManager {
     fileprivate let API_KEY = "77f5a3424a8711343cbb3094bc8337d3"
     
     
-    func getWeather(for coordinate: CLLocationCoordinate2D, onComplete: @escaping (Bool, WeatherInfo?) -> Void) {
+    func getWeather(for coordinate: CLLocationCoordinate2D, onComplete: @escaping (Bool, Weather?) -> Void) {
         let queryString = "lat=\(Int(coordinate.latitude))&lon=\(Int(coordinate.longitude))&APPID=\(API_KEY)"
         
         let url = URL(string: HOST + baseURL + queryString)
@@ -31,10 +31,8 @@ class ApiManager {
                 if httpResponse.statusCode != 200 {
                     onComplete(false, nil)
                 } else {
-//                    json = try? JSONSerialization.data(withJSONObject: data!, options: .prettyPrinted)
                     json = String(data: data!, encoding: String.Encoding.utf8)!
-                    log.debug(json)
-                    let weatherInfo = Mapper<WeatherInfo>().map(JSONString: json as! String)
+                    let weatherInfo = Mapper<Weather>().map(JSONString: json as! String)
                     onComplete(true, weatherInfo)
                 }
             }
