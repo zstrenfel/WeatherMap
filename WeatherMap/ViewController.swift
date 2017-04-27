@@ -23,7 +23,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     let REGION_RADIUS: CLLocationDistance = 2000
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var weatherHistory: [WeatherHistory] = []
+    var weatherHistory: [String:[WeatherHistory]] = [:]
+    var sections: [String] = []
     
     //MARK: - Initialization
     
@@ -44,7 +45,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func fetchWeatherHistory() {
         do {
-            weatherHistory = try context.fetch(WeatherHistory.fetchRequest())
+            var weatherHistory: [WeatherHistory] = try context.fetch(WeatherHistory.fetchRequest()) as! [WeatherHistory]
+            weatherHistory.sort { $0.created_at?.compare($1.created_at! as Date) == .orderedDescending }
+            _ = weatherHistory.map { history in
+                let date = (history.created_at! as Date).stringFormat
+                if !sections.contains(date) {
+                    sections.append(date)
+                    self.weatherHistory[date] = []
+                }
+                self.weatherHistory[date]!.append(history)
+            }
             self.tableView.reloadData()
         } catch {
             log.error("Could not fetch weather history from core data")
@@ -113,26 +123,34 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //MARK: - Table View Data Source
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        return sections[section]
+    }
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return weatherHistory.count
+        let sectionKey = sections[section]
+        return weatherHistory[sectionKey]!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "weatherHistoryCell") as! WeatherHistoryTableViewCell
-        let weatherHistory = self.weatherHistory[indexPath.row]
-        cell.locationLabel.text = weatherHistory.location_name
-        cell.humidityLabel.text = "\(Int(weatherHistory.humidity))%"
-        cell.tempLabel.text = "\(Int(weatherHistory.temp))°"
-        cell.weatherLabel.text = weatherHistory.weather
-        cell.lat = weatherHistory.lat
-        cell.lon = weatherHistory.lon
+        let sectionKey = self.sections[indexPath.section]
+        let weatherHistory = self.weatherHistory[sectionKey]?[indexPath.row]
+        cell.locationLabel.text = weatherHistory?.location_name
+        cell.humidityLabel.text = "\(Int((weatherHistory?.humidity)!))%"
+        cell.tempLabel.text = "\(Int((weatherHistory?.temp)!))°"
+        cell.weatherLabel.text = weatherHistory?.weather
+        cell.lat = weatherHistory?.lat
+        cell.lon = weatherHistory?.lon
         return cell
     }
     
