@@ -46,7 +46,7 @@ class ApiManager {
     }
     
     fileprivate func dataTask(for request: URLRequest, onComplete: @escaping CompletionHandler) {
-        let session = URLSession(configuration: .default)
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         session.dataTask(with: request, completionHandler: { (data, response, error) in
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode != 200 {

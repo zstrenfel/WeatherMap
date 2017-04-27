@@ -37,6 +37,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         mapView.delegate = self
         
+        tableView.tableFooterView = UIView()
+        
         fetchWeatherHistory()
     }
     
@@ -58,9 +60,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         history.setValue(weather.humidity, forKey: "humidity")
         history.setValue(weather.temp, forKey: "temp")
         history.setValue(weather.weather, forKey: "weather")
-        DispatchQueue.main.async {
-            (UIApplication.shared.delegate as! AppDelegate).saveContext()
-        }
+        
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
         
     }
     
@@ -83,11 +84,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func handleWeatherInfo(success: Bool, data: Any?) {
         if let weather = data as? Weather {
             let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: (self.locationManager.location?.coordinate)!)
-            DispatchQueue.main.async {
-                self.mapView.addAnnotation(annotation)
-                self.mapView.selectAnnotation(self.mapView.annotations[0], animated: true)
-            }
-            //can i do this in a background thread?
+            self.mapView.addAnnotation(annotation)
+            self.mapView.selectAnnotation(self.mapView.annotations[0], animated: true)
             self.saveWeatherHistory(for: weather)
         } else {
             log.debug("something went wrong: \(String(describing: data))")
