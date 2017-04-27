@@ -50,7 +50,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func saveWeatherHistory(for weather: Weather) {
-        var history = WeatherHistory(context: context)
+        let history = WeatherHistory(context: context)
         history.setValue(Date(), forKey: "created_at")
         history.setValue(weather.lat, forKey: "lat")
         history.setValue(weather.lon, forKey: "lon")
@@ -58,7 +58,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         history.setValue(weather.humidity, forKey: "humidity")
         history.setValue(weather.temp, forKey: "temp")
         history.setValue(weather.weather, forKey: "weather")
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        DispatchQueue.main.async {
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        }
+        
     }
     
     // MARK: Map View
@@ -86,6 +89,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
             //can i do this in a background thread?
             self.saveWeatherHistory(for: weather)
+        } else {
+            log.debug("something went wrong: \(String(describing: data))")
         }
     }
     
@@ -114,7 +119,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 55
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -123,7 +128,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "weatherHistoryCell") as! WeatherHistoryTableViewCell
-        cell.locationLabel.text = self.weatherHistory[indexPath.row].location_name
+        let weatherHistory = self.weatherHistory[indexPath.row]
+        cell.locationLabel.text = weatherHistory.location_name
+        cell.humidityLabel.text = "\(Int(weatherHistory.humidity))%"
+        cell.tempLabel.text = "\(Int(weatherHistory.temp))°"
+        cell.weatherLabel.text = weatherHistory.weather
+        cell.lat = weatherHistory.lat
+        cell.lon = weatherHistory.lon
         return cell
     }
     
