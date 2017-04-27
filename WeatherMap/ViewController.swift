@@ -13,14 +13,14 @@ import XCGLogger
 import CoreData
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, MKMapViewDelegate {
-
+    
     //MARK: - Properties
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
     
     var locationManager: CLLocationManager!
-    let REGION_RADIUS: CLLocationDistance = 2000
+    let REGION_RADIUS: CLLocationDistance = 5000
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var weatherHistory: [String:[WeatherHistory]] = [:]
@@ -48,7 +48,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             var weatherHistory: [WeatherHistory] = try context.fetch(WeatherHistory.fetchRequest()) as! [WeatherHistory]
             weatherHistory.sort { $0.created_at?.compare($1.created_at! as Date) == .orderedDescending }
             _ = weatherHistory.map { history in
-                let date = (history.created_at! as Date).stringFormat
+                let date = (history.created_at! as Date).dateString
                 if !sections.contains(date) {
                     sections.append(date)
                     self.weatherHistory[date] = []
@@ -93,7 +93,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func handleWeatherInfo(success: Bool, data: Any?) {
         if let weather = data as? Weather {
-            let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, coordinate: (self.locationManager.location?.coordinate)!)
+            let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, humidity: weather.humidity!, coordinate: (self.locationManager.location?.coordinate)!)
             self.mapView.addAnnotation(annotation)
             self.mapView.selectAnnotation(self.mapView.annotations[0], animated: true)
             self.saveWeatherHistory(for: weather)
@@ -145,13 +145,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "weatherHistoryCell") as! WeatherHistoryTableViewCell
         let sectionKey = self.sections[indexPath.section]
         let weatherHistory = self.weatherHistory[sectionKey]?[indexPath.row]
-        cell.locationLabel.text = weatherHistory?.location_name
-        cell.humidityLabel.text = "\(Int((weatherHistory?.humidity)!))%"
-        cell.tempLabel.text = "\(Int((weatherHistory?.temp)!))°"
-        cell.weatherLabel.text = weatherHistory?.weather
-        cell.lat = weatherHistory?.lat
-        cell.lon = weatherHistory?.lon
+        cell.configureCell(with: weatherHistory!)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! WeatherHistoryTableViewCell
+        let location = CLLocation(latitude: cell.lat!, longitude: cell.lon!)
+        if location != locationManager.location! {
+            self.centerMapOnLocation(location: location)
+        }
     }
     
     //MARK: - Location Manager Delegate

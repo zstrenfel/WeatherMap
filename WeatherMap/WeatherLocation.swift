@@ -14,7 +14,8 @@ class WeatherLocation: NSObject, MKAnnotation {
     //MARK: - Properties
     let locationName: String
     let weather: String
-    let temp: Float
+    let temp: Int
+    let humidity: Int
     let coordinate: CLLocationCoordinate2D
     
     var title: String? {
@@ -22,14 +23,15 @@ class WeatherLocation: NSObject, MKAnnotation {
     }
     
     var subtitle: String? {
-        return "\(weather) and \(temp) degrees"
+        return "\(weather), \(temp)°, humidity at \(humidity)%"
     }
     
     //MARK: - Initialization
-    init(locationName: String, weather: String, temp: Float, coordinate: CLLocationCoordinate2D) {
+    init(locationName: String, weather: String, temp: Float, humidity: Int, coordinate: CLLocationCoordinate2D) {
         self.locationName = locationName
         self.weather = weather
-        self.temp = temp
+        self.temp = Int(temp)
+        self.humidity = Int(humidity)
         self.coordinate = coordinate
         
         super.init()

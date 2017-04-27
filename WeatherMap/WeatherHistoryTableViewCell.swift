@@ -14,6 +14,7 @@ class WeatherHistoryTableViewCell: UITableViewCell {
     @IBOutlet weak var weatherLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
     
     var lat: Double? = nil
     var lon: Double? = nil
@@ -27,6 +28,16 @@ class WeatherHistoryTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func configureCell(with weather: WeatherHistory) {
+        locationLabel.text = weather.location_name
+        humidityLabel.text = "\(Int(weather.humidity))%"
+        tempLabel.text = "\(Int(weather.temp))°"
+        weatherLabel.text = weather.weather
+        lat = weather.lat
+        lon = weather.lon
+        timeLabel.text = (weather.created_at! as Date).timeString
     }
 
 }

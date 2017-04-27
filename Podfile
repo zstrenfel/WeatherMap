@@ -6,7 +6,6 @@ target 'WeatherMap' do
   use_frameworks!
 
   # Pods for WeatherMap
-  pod 'Alamofire', '~> 4.4’
   pod 'ObjectMapper', '~> 2.2'
   pod 'XCGLogger', '~> 5.0.1'
 
