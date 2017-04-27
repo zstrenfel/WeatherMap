@@ -15,6 +15,7 @@ class Weather: Mappable {
     var weather: String? 
     var temp: Float?
     var name: String?
+    var humidity: Int?
     
     required init?(map: Map) {}
     
@@ -23,6 +24,7 @@ class Weather: Mappable {
         lon         <- map["coord.lon"]
         weather     <- map["weather.0.main"]
         temp        <- map["main.temp"]
+        humidity    <- map["main.humidity"]
         name        <- map["name"]
     }
 }

@@ -2,8 +2,6 @@
 //  ViewController.swift
 //  WeatherMap
 //
-// MapKit Functionality based off of:https://www.raywenderlich.com/90971/introduction-mapkit-swift-tutorial
-//
 //  Created by Zach Strenfel on 4/25/17.
 //  Copyright © 2017 Zach Strenfel. All rights reserved.
 //
@@ -12,6 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import XCGLogger
+import CoreData
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, MKMapViewDelegate {
 
@@ -21,13 +20,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var tableView: UITableView!
     
     var locationManager: CLLocationManager!
-    var weatherCells = ["Springfield", "Somewhere"]
     let REGION_RADIUS: CLLocationDistance = 2000
     
-    var city: String? = nil
-    var countryCode: String? = nil
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var weatherHistory: [WeatherHistory] = []
     
     //MARK: - Initialization
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +36,29 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         locationManager.requestLocation()
         
         mapView.delegate = self
+        
+        fetchWeatherHistory()
+    }
+    
+    func fetchWeatherHistory() {
+        do {
+            weatherHistory = try context.fetch(WeatherHistory.fetchRequest())
+            self.tableView.reloadData()
+        } catch {
+            log.error("Could not fetch weather history from core data")
+        }
+    }
+    
+    func saveWeatherHistory(for weather: Weather) {
+        var history = WeatherHistory(context: context)
+        history.setValue(Date(), forKey: "created_at")
+        history.setValue(weather.lat, forKey: "lat")
+        history.setValue(weather.lon, forKey: "lon")
+        history.setValue(weather.name, forKey: "location_name")
+        history.setValue(weather.humidity, forKey: "humidity")
+        history.setValue(weather.temp, forKey: "temp")
+        history.setValue(weather.weather, forKey: "weather")
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
     }
     
     // MARK: Map View
@@ -62,7 +84,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.mapView.addAnnotation(annotation)
                 self.mapView.selectAnnotation(self.mapView.annotations[0], animated: true)
             }
-            
+            //can i do this in a background thread?
+            self.saveWeatherHistory(for: weather)
         }
     }
     
@@ -95,12 +118,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return weatherCells.count
+        return weatherHistory.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "weatherHistoryCell") as! WeatherHistoryTableViewCell
-        cell.locationLabel.text = self.weatherCells[indexPath.row]
+        cell.locationLabel.text = self.weatherHistory[indexPath.row].location_name
         return cell
     }
     
@@ -122,11 +145,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         log.error(error)
-    }
-    
-    // MARK: - Utitlities
-    func getLocationInformation(from location: CLLocation) {
-        
     }
 }
 
