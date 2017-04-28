@@ -12,7 +12,7 @@ import CoreLocation
 import XCGLogger
 import CoreData
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, MKMapViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate {
     
     //MARK: - Properties
     
@@ -26,13 +26,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var weatherHistory: [String:[WeatherHistory]] = [:]
     var sections: [String] = []
-    
-    //search bar properties
-    var searchController: UISearchController!
-    var localSearchRequet: MKLocalSearchRequest!
-    var localSearch: MKLocalSearch!
-    var localSearchResponse: MKLocalSearchResponse!
-    
     
     private let IS_ADMIN = true
     
@@ -97,13 +90,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //MARK: - Map View Delegate
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? WeatherLocation {
-            let identifier = "point"
-            var view: MKPointAnnotation
-            if let dequeued = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPointAnnotation {
+            let identifier = "pin"
+            var view: MKPinAnnotationView
+            if let dequeued = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
                 dequeued.annotation = annotation
                 view = dequeued
             } else {
-                view = MKPointAnnotation(annotation: annotation, reuseIdentifier: identifier)
+                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 view.canShowCallout = true
                 view.calloutOffset = CGPoint(x: -8, y: 0)
             }
@@ -243,6 +236,28 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
     }
     
+    //MARK: - Search Bar Delegate
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        dismiss(animated: true, completion: nil)
+        
+        let localSearchRequet = MKLocalSearchRequest()
+        localSearchRequet.naturalLanguageQuery = searchBar.text
+        let localSearch = MKLocalSearch(request: localSearchRequet)
+        
+        localSearch.start { (response, error) in
+            if response == nil{
+                let alertController = UIAlertController(title: nil, message: "Place Not Found", preferredStyle: UIAlertControllerStyle.alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+                return
+            } else {
+                let location = CLLocation(latitude: response!.boundingRegion.center.latitude, longitude: response!.boundingRegion.center.longitude)
+                self.centerMap(on: location)
+            }
+        }
+    }
+    
     // MARK: - Actions
     // Segues to admin tools
     override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
@@ -256,6 +271,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBAction func showSearchBar(_ sender: UIBarButtonItem) {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Enter Location"
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.delegate = self
+        present(searchController, animated: true, completion: nil)
     }
 }
 
