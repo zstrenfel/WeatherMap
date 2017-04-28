@@ -29,10 +29,11 @@
                                 </connections>
                             </mapView>
                             <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCA-3q-4ZR">
-                                <rect key="frame" x="244" y="296" width="115" height="30"/>
-                                <color key="backgroundColor" red="0.0" green="0.70588235290000001" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="86.5" y="296" width="202" height="28"/>
+                                <color key="backgroundColor" red="0.0" green="0.6146525223" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Current Location"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="5" maxX="10" maxY="5"/>
+                                <state key="normal" title="Return to Current Location"/>
                                 <connections>
                                     <action selector="returnToCurrentLocation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L64-oL-yp0"/>
                                 </connections>
@@ -156,8 +157,8 @@
                             <constraint firstItem="gy6-c1-EZb" firstAttribute="top" secondItem="Fa0-Av-EJs" secondAttribute="bottom" id="UGp-Ea-zfQ"/>
                             <constraint firstItem="Fa0-Av-EJs" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="aNn-2d-y3K"/>
                             <constraint firstAttribute="trailing" secondItem="gy6-c1-EZb" secondAttribute="trailing" id="f7t-5K-leo"/>
-                            <constraint firstItem="aCA-3q-4ZR" firstAttribute="leading" secondItem="Fa0-Av-EJs" secondAttribute="trailing" constant="-131" id="nDW-FS-5vX"/>
                             <constraint firstAttribute="trailing" secondItem="Fa0-Av-EJs" secondAttribute="trailing" id="vTg-bB-NRd"/>
+                            <constraint firstItem="aCA-3q-4ZR" firstAttribute="centerX" secondItem="Fa0-Av-EJs" secondAttribute="centerX" id="xrt-hv-Qk4"/>
                             <constraint firstItem="gy6-c1-EZb" firstAttribute="height" secondItem="Fa0-Av-EJs" secondAttribute="height" id="z3h-VF-fkw"/>
                         </constraints>
                     </view>

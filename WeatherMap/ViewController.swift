@@ -42,6 +42,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         mapView.delegate = self
         
         tableView.tableFooterView = UIView()
+        
+        currentLocationButton.layer.cornerRadius = 10
     }
     
     override func viewWillAppear(_ animated: Bool) {
