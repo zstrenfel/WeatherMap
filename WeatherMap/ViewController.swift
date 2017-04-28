@@ -18,6 +18,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var currentLocationButton: UIButton!
     
     var locationManager: CLLocationManager!
     let REGION_RADIUS: CLLocationDistance = 5000
@@ -41,19 +42,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         mapView.delegate = self
         
         tableView.tableFooterView = UIView()
-        
-        fetchWeatherHistory()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchWeatherHistory()
+        self.tableView.reloadData()
     }
     
     
     func fetchWeatherHistory() {
         do {
             var weatherHistory: [WeatherHistory] = try context.fetch(WeatherHistory.fetchRequest()) as! [WeatherHistory]
+            log.debug(weatherHistory)
             weatherHistory.sort { $0.created_at?.compare($1.created_at! as Date) == .orderedDescending }
             _ = weatherHistory.map { history in
                 let date = (history.created_at! as Date).dateString
@@ -63,7 +64,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 }
                 self.weatherHistory[date]!.append(history)
             }
-            self.tableView.reloadData()
         } catch {
             log.error("Could not fetch weather history from core data")
         }
@@ -80,7 +80,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         history.setValue(weather.weather, forKey: "weather")
         
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
-        
     }
     
     // MARK: Map View
@@ -101,7 +100,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func handleWeatherInfo(success: Bool, data: Any?) {
         if let weather = data as? Weather {
-            let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, humidity: weather.humidity!, coordinate: (self.locationManager.location?.coordinate)!)
+            let coordinate = CLLocationCoordinate2D(latitude: weather.lat!, longitude: weather.lon!)
+            let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, humidity: weather.humidity!, coordinate: coordinate)
             
             if (self.mapView.annotations.count > 0) {
                 self.mapView.removeAnnotations(self.mapView.annotations)
@@ -126,7 +126,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             } else {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 view.canShowCallout = true
-                view.calloutOffset = CGPoint(x: -5, y: 5)
+                view.calloutOffset = CGPoint(x: -8, y: 0)
             }
             return view
         }
@@ -134,7 +134,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     //MARK: - Table View Data Source
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -194,6 +193,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if IS_ADMIN {
             self.performSegue(withIdentifier: "showAdmin", sender: nil)
         }
+    }
+    
+    @IBAction func returnToCurrentLocation(_ sender: UIButton) {
+        centerMapOnLocation(location: locationManager.location!)
     }
 }
 
