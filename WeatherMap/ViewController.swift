@@ -27,6 +27,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var weatherHistory: [String:[WeatherHistory]] = [:]
     var sections: [String] = []
     
+    var currentWeather: WeatherHistory? = nil
+    
     private let IS_ADMIN = true
     
     //MARK: - Initialization
@@ -234,6 +236,25 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         history.setValue(weather.weather, forKey: "weather")
         
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        
+        if currentWeather != nil {
+            self.addRow(with: currentWeather!)
+        }
+        currentWeather = history
+    }
+    
+    
+    func addRow(with history: WeatherHistory) {
+        let date = (history.created_at! as Date).dateString
+        if !sections.contains(date) {
+            sections.append(date)
+            self.weatherHistory[date] = [history]
+            self.tableView.insertSections([0], with: .top)
+        } else {
+            self.weatherHistory[date]!.insert(history, at: 0)
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.tableView.insertRows(at: [indexPath], with: .top)
+        }
     }
     
     //MARK: - Search Bar Delegate
