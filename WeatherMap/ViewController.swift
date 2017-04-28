@@ -15,7 +15,6 @@ import CoreData
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate {
     
     //MARK: - Properties
-    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var currentLocationButton: UIButton!
@@ -25,8 +24,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var weatherHistory: [WeatherHistory] = []
-    
     var currentWeather: WeatherHistory? = nil
+    //how many weather history objects should be displayed
+    let HISTORY_LIMIT = 5
     
     private let IS_ADMIN = true
     
@@ -34,31 +34,31 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
+        self.locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.requestLocation()
         
-        mapView.delegate = self
+        self.mapView.delegate = self
         
-        tableView.tableFooterView = UIView()
+        self.tableView.tableFooterView = UIView()
         
-        currentLocationButton.layer.cornerRadius = 10
-        currentLocationButton.isHidden = true
-        currentLocationButton.alpha = 0.0
+        self.currentLocationButton.layer.cornerRadius = 10
+        self.currentLocationButton.isHidden = true
+        self.currentLocationButton.alpha = 0.0
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        currentWeather = nil
-        fetchWeatherHistory()
+        self.currentWeather = nil
+        self.fetchWeatherHistory()
         self.tableView.reloadData()
     }
     
     // MARK: Map View
     func centerMap(on location: CLLocation) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, REGION_RADIUS, REGION_RADIUS)
-        mapView.setRegion(coordinateRegion, animated: true)
+        self.mapView.setRegion(coordinateRegion, animated: true)
         self.getWeatherInfo(for: location)
     }
     
@@ -77,7 +77,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             let annotation = WeatherLocation(locationName: weather.name!, weather: weather.weather!, temp: weather.temp!, humidity: weather.humidity!, coordinate: coordinate)
             
             //clear all existing annotations
-            if (self.mapView.annotations.count > 0) {
+            if self.mapView.annotations.count > 0 {
                 self.mapView.removeAnnotations(self.mapView.annotations)
             }
             
@@ -94,7 +94,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if let annotation = annotation as? WeatherLocation {
             let identifier = "pin"
             var view: MKPinAnnotationView
-            if let dequeued = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+            if let dequeued = self.mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
                 dequeued.annotation = annotation
                 view = dequeued
             } else {
@@ -109,7 +109,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     //Used to determine if currentLocationButton should be set to visible or not
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        if let userLocation = locationManager.location {
+        if let userLocation = self.locationManager.location {
             if (!self.locationVisibleInMap(location: userLocation)) {
                 self.showReturnButton()
             } else {
@@ -123,8 +123,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      * users location within it's bounds.
     */
     func locationVisibleInMap(location: CLLocation) -> Bool {
-        let center = mapView.region.center
-        let regionSpan = mapView.region.span
+        let center = self.mapView.region.center
+        let regionSpan = self.mapView.region.span
         let latDelta = regionSpan.latitudeDelta
         let lonDelta = regionSpan.longitudeDelta
         
@@ -158,7 +158,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return weatherHistory.count
+        return self.weatherHistory.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -170,10 +170,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // Will center the map on cell's location if it is not our current location.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! WeatherHistoryTableViewCell
+        let cell = self.tableView.cellForRow(at: indexPath) as! WeatherHistoryTableViewCell
         let location = CLLocation(latitude: cell.lat!, longitude: cell.lon!)
         
-        if (!locationVisibleInMap(location: location)) {
+        if (!self.locationVisibleInMap(location: location)) {
             self.centerMap(on: location)
         }
     }
@@ -184,20 +184,23 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      */
     func addRow(with history: WeatherHistory) {
         self.tableView.beginUpdates()
-        if (self.weatherHistory.count == 5) {
-            self.weatherHistory = Array(weatherHistory[0...3])
-            self.tableView.deleteRows(at: [IndexPath(row: 4, section: 0)], with: .top)
+        log.debug(self.weatherHistory.count)
+        if (self.weatherHistory.count >= self.HISTORY_LIMIT) {
+            for i in 0..<(self.weatherHistory.count - (self.HISTORY_LIMIT - 1)) {
+                let row = (self.HISTORY_LIMIT - 1) + (1 * i)
+                self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .top)
+            }
+            self.weatherHistory = Array(weatherHistory[0..<(self.HISTORY_LIMIT - 1)])
         }
         self.weatherHistory.insert(history, at: 0)
-        let indexPath = IndexPath(row: 0, section: 0)
-        self.tableView.insertRows(at: [indexPath], with: .top)
+        self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
         self.tableView.endUpdates()
     }
     
     //MARK: - Location Manager Delegate
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
-            locationManager.requestLocation()
+            self.locationManager.requestLocation()
         }
     }
     
@@ -206,7 +209,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             log.error("no location information given")
             return
         }
-        centerMap(on: location)
+        self.centerMap(on: location)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -218,7 +221,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         do {
             let weatherFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "WeatherHistory")
             weatherFetchRequest.sortDescriptors = [NSSortDescriptor(key: "created_at", ascending: false)]
-            weatherFetchRequest.fetchLimit = 5
+            weatherFetchRequest.fetchLimit = self.HISTORY_LIMIT
             self.weatherHistory = try context.fetch(weatherFetchRequest) as! [WeatherHistory]
         } catch {
             log.error("Could not fetch weather history from core data")
@@ -238,10 +241,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
         
         //updates table with previous weather history if need be
-        if currentWeather != nil {
+        if self.currentWeather != nil {
             self.addRow(with: currentWeather!)
         }
-        currentWeather = history
+        self.currentWeather = history
     }
     
     //MARK: - Search Bar Delegate
@@ -269,13 +272,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // MARK: - Actions
     // Segues to admin tools
     override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
-        if IS_ADMIN {
+        if self.IS_ADMIN {
             self.performSegue(withIdentifier: "showAdmin", sender: nil)
         }
     }
     
     @IBAction func returnToCurrentLocation(_ sender: UIButton) {
-        centerMap(on: locationManager.location!)
+        self.centerMap(on: locationManager.location!)
     }
     
     @IBAction func showSearchBar(_ sender: UIBarButtonItem) {
@@ -283,7 +286,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         searchController.searchBar.placeholder = "Enter Location"
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.delegate = self
-        present(searchController, animated: true, completion: nil)
+        self.present(searchController, animated: true, completion: nil)
     }
 }
 
