@@ -50,6 +50,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        currentWeather = nil
         fetchWeatherHistory()
         self.tableView.reloadData()
     }
@@ -152,28 +153,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     //MARK: - Table View Data Source
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionKey = sections[section]
-        return weatherHistory[sectionKey]!.count
+        return weatherHistory.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "weatherHistoryCell") as! WeatherHistoryTableViewCell
-        let sectionKey = self.sections[indexPath.section]
-        let weatherHistory = self.weatherHistory[sectionKey]?[indexPath.row]
-        cell.configureCell(with: weatherHistory!)
+        let weatherHistory = self.weatherHistory[indexPath.row]
+        cell.configureCell(with: weatherHistory)
         return cell
     }
     
@@ -192,16 +183,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
      * all weatherhistories everytime the users navigates to a new location.
      */
     func addRow(with history: WeatherHistory) {
-        let date = (history.created_at! as Date).dateString
-        if !sections.contains(date) {
-            sections.append(date)
-            self.weatherHistory[date] = [history]
-            self.tableView.insertSections([0], with: .top)
-        } else {
-            self.weatherHistory[date]!.insert(history, at: 0)
-            let indexPath = IndexPath(row: 0, section: 0)
-            self.tableView.insertRows(at: [indexPath], with: .top)
+        self.tableView.beginUpdates()
+        if (self.weatherHistory.count == 5) {
+            self.weatherHistory = Array(weatherHistory[0...3])
+            self.tableView.deleteRows(at: [IndexPath(row: 4, section: 0)], with: .top)
         }
+        self.weatherHistory.insert(history, at: 0)
+        let indexPath = IndexPath(row: 0, section: 0)
+        self.tableView.insertRows(at: [indexPath], with: .top)
+        self.tableView.endUpdates()
     }
     
     //MARK: - Location Manager Delegate
@@ -226,22 +216,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //MARK: - Core Data
     func fetchWeatherHistory() {
         do {
-            self.weatherHistory = [:]
-            self.sections = []
             let weatherFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "WeatherHistory")
             weatherFetchRequest.sortDescriptors = [NSSortDescriptor(key: "created_at", ascending: false)]
             weatherFetchRequest.fetchLimit = 5
-            let weatherHistory: [WeatherHistory] = try context.fetch(weatherFetchRequest) as! [WeatherHistory]
-            
-            
-            for history in weatherHistory {
-                let date = (history.created_at! as Date).dateString
-                if !sections.contains(date) {
-                    sections.append(date)
-                    self.weatherHistory[date] = []
-                }
-                self.weatherHistory[date]!.append(history)
-            }
+            self.weatherHistory = try context.fetch(weatherFetchRequest) as! [WeatherHistory]
         } catch {
             log.error("Could not fetch weather history from core data")
         }

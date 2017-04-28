@@ -14,7 +14,6 @@ class WeatherHistoryTableViewCell: UITableViewCell {
     @IBOutlet weak var weatherLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
     
     var lat: Double? = nil
     var lon: Double? = nil
@@ -35,7 +34,6 @@ class WeatherHistoryTableViewCell: UITableViewCell {
         weatherLabel.text = weather.weather
         lat = weather.lat
         lon = weather.lon
-        timeLabel.text = (weather.created_at! as Date).timeString
     }
 
 }

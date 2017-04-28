@@ -50,62 +50,62 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Q0l-Vf-xO3" userLabel="Outer SV">
-                                                    <rect key="frame" x="8" y="7.5" width="285" height="28"/>
+                                                    <rect key="frame" x="8" y="7.5" width="330.5" height="28"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rns-rr-P8C">
-                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="15.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="330.5" height="15.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="left" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="OHp-LU-bX1" userLabel="Bottom SV">
-                                                            <rect key="frame" x="0.0" y="15.5" width="285" height="12.5"/>
+                                                        <stackView opaque="NO" contentMode="left" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OHp-LU-bX1" userLabel="Bottom SV">
+                                                            <rect key="frame" x="0.0" y="15.5" width="330.5" height="12.5"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" distribution="fillProportionally" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="6J2-FW-qqd" userLabel="Weather SV">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="96.5" height="12.5"/>
+                                                                <stackView opaque="NO" contentMode="left" horizontalCompressionResistancePriority="749" distribution="fillProportionally" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="6J2-FW-qqd" userLabel="Weather SV">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="111.5" height="12.5"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="weather:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EEv-3z-nfZ">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="47" height="12.5"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Weather:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EEv-3z-nfZ">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="55" height="12.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weather" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1sv-3h-G4P">
-                                                                            <rect key="frame" x="48" y="0.0" width="48.5" height="12.5"/>
+                                                                            <rect key="frame" x="57" y="0.0" width="54.5" height="12.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                     </subviews>
                                                                 </stackView>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="JGm-lS-40O" userLabel="Temp SV">
-                                                                    <rect key="frame" x="99.5" y="0.0" width="83.5" height="12.5"/>
+                                                                <stackView opaque="NO" contentMode="left" distribution="fillProportionally" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="JGm-lS-40O" userLabel="Temp SV">
+                                                                    <rect key="frame" x="115.5" y="0.0" width="96.5" height="12.5"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="temp:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u5D-yJ-rLh">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="31.5" height="12.5"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temp:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u5D-yJ-rLh">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="37.5" height="12.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="degrees:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvV-ht-gBO">
-                                                                            <rect key="frame" x="32.5" y="0.0" width="51" height="12.5"/>
+                                                                            <rect key="frame" x="39.5" y="0.0" width="57" height="12.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                     </subviews>
                                                                 </stackView>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="lYL-CA-sFc" userLabel="Humidity SV">
-                                                                    <rect key="frame" x="186" y="0.0" width="99" height="12.5"/>
+                                                                <stackView opaque="NO" contentMode="left" distribution="fillProportionally" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="lYL-CA-sFc" userLabel="Humidity SV">
+                                                                    <rect key="frame" x="216" y="0.0" width="114.5" height="12.5"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="humidity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ma-Z3-0GF">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="46.5" height="12.5"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Humidity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ma-Z3-0GF">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="54.5" height="12.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Humidity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOn-bI-F1H">
-                                                                            <rect key="frame" x="47.5" y="0.0" width="51.5" height="12.5"/>
+                                                                            <rect key="frame" x="56.5" y="0.0" width="58" height="12.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <nil key="highlightedColor"/>
@@ -116,22 +116,10 @@
                                                         </stackView>
                                                     </subviews>
                                                 </stackView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehK-Ri-3Yg" userLabel="Time">
-                                                    <rect key="frame" x="297" y="8" width="70" height="35.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="9yr-Dt-na0"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" white="0.78879123263888884" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="ehK-Ri-3Yg" secondAttribute="bottom" id="1mB-wJ-yg8"/>
                                                 <constraint firstItem="Q0l-Vf-xO3" firstAttribute="leading" secondItem="2k9-lZ-6GP" secondAttribute="leadingMargin" identifier="outerSVLeading" id="6Ba-pd-Bnt"/>
-                                                <constraint firstItem="ehK-Ri-3Yg" firstAttribute="top" secondItem="2k9-lZ-6GP" secondAttribute="topMargin" id="H4E-0T-6dJ"/>
-                                                <constraint firstItem="ehK-Ri-3Yg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Q0l-Vf-xO3" secondAttribute="trailing" constant="4" identifier="outerSVTrailing" id="aXa-Vq-rKT"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="ehK-Ri-3Yg" secondAttribute="trailing" id="bRd-Gy-wxL"/>
+                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="Q0l-Vf-xO3" secondAttribute="trailing" priority="900" id="LMJ-Ut-clB"/>
                                                 <constraint firstItem="Q0l-Vf-xO3" firstAttribute="top" secondItem="2k9-lZ-6GP" secondAttribute="topMargin" identifier="outerSVTop" id="nMO-jg-h71"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Q0l-Vf-xO3" secondAttribute="bottom" identifier="outerSVBottom" id="urF-Ee-WoR"/>
                                             </constraints>
@@ -140,7 +128,6 @@
                                             <outlet property="humidityLabel" destination="SOn-bI-F1H" id="own-2A-aPi"/>
                                             <outlet property="locationLabel" destination="Rns-rr-P8C" id="ESv-M1-W99"/>
                                             <outlet property="tempLabel" destination="rvV-ht-gBO" id="rQe-eo-6Na"/>
-                                            <outlet property="timeLabel" destination="ehK-Ri-3Yg" id="OKy-e3-GMV"/>
                                             <outlet property="weatherLabel" destination="1sv-3h-G4P" id="jLl-ci-l38"/>
                                         </connections>
                                     </tableViewCell>
