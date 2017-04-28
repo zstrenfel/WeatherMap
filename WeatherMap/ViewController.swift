@@ -24,8 +24,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     let REGION_RADIUS: CLLocationDistance = 5000
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var weatherHistory: [String:[WeatherHistory]] = [:]
-    var sections: [String] = []
+    var weatherHistory: [WeatherHistory] = []
     
     var currentWeather: WeatherHistory? = nil
     
@@ -229,8 +228,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         do {
             self.weatherHistory = [:]
             self.sections = []
-            var weatherHistory: [WeatherHistory] = try context.fetch(WeatherHistory.fetchRequest()) as! [WeatherHistory]
-            weatherHistory.sort { $0.created_at?.compare($1.created_at! as Date) == .orderedDescending }
+            let weatherFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "WeatherHistory")
+            weatherFetchRequest.sortDescriptors = [NSSortDescriptor(key: "created_at", ascending: false)]
+            weatherFetchRequest.fetchLimit = 5
+            let weatherHistory: [WeatherHistory] = try context.fetch(weatherFetchRequest) as! [WeatherHistory]
+            
+            
             for history in weatherHistory {
                 let date = (history.created_at! as Date).dateString
                 if !sections.contains(date) {
