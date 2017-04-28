@@ -188,6 +188,23 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
+    /**
+     * Presumes the success of a weatherHistory being created. Less resource heavy than re-fetching
+     * all weatherhistories everytime the users navigates to a new location.
+     */
+    func addRow(with history: WeatherHistory) {
+        let date = (history.created_at! as Date).dateString
+        if !sections.contains(date) {
+            sections.append(date)
+            self.weatherHistory[date] = [history]
+            self.tableView.insertSections([0], with: .top)
+        } else {
+            self.weatherHistory[date]!.insert(history, at: 0)
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.tableView.insertRows(at: [indexPath], with: .top)
+        }
+    }
+    
     //MARK: - Location Manager Delegate
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
@@ -210,6 +227,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //MARK: - Core Data
     func fetchWeatherHistory() {
         do {
+            self.weatherHistory = [:]
+            self.sections = []
             var weatherHistory: [WeatherHistory] = try context.fetch(WeatherHistory.fetchRequest()) as! [WeatherHistory]
             weatherHistory.sort { $0.created_at?.compare($1.created_at! as Date) == .orderedDescending }
             for history in weatherHistory {
@@ -237,24 +256,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
         
+        //updates table with previous weather history if need be
         if currentWeather != nil {
             self.addRow(with: currentWeather!)
         }
         currentWeather = history
-    }
-    
-    
-    func addRow(with history: WeatherHistory) {
-        let date = (history.created_at! as Date).dateString
-        if !sections.contains(date) {
-            sections.append(date)
-            self.weatherHistory[date] = [history]
-            self.tableView.insertSections([0], with: .top)
-        } else {
-            self.weatherHistory[date]!.insert(history, at: 0)
-            let indexPath = IndexPath(row: 0, section: 0)
-            self.tableView.insertRows(at: [indexPath], with: .top)
-        }
     }
     
     //MARK: - Search Bar Delegate
