@@ -75,6 +75,7 @@
 		928BAD8E1EB16FCB005BBBBF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				929E2D741EAFF88400697B0E /* WeatherHistoryTableViewCell.swift */,
 				9235CDF41EB113450064D111 /* Weather.swift */,
 				929E2D711EAFED4000697B0E /* ApiManager.swift */,
 				928BAD8B1EB16E15005BBBBF /* WeatherLocation.swift */,
@@ -106,7 +107,6 @@
 			children = (
 				928BAD8D1EB16FB6005BBBBF /* Controllers */,
 				928BAD8E1EB16FCB005BBBBF /* Utilities */,
-				929E2D741EAFF88400697B0E /* WeatherHistoryTableViewCell.swift */,
 				929E2D5C1EAFDB1200697B0E /* AppDelegate.swift */,
 				929E2D601EAFDB1200697B0E /* Main.storyboard */,
 				929E2D661EAFDB1200697B0E /* Assets.xcassets */,

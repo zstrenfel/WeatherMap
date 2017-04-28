@@ -26,13 +26,11 @@ class WeatherHistoryTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     func configureCell(with weather: WeatherHistory) {
         locationLabel.text = weather.location_name
-        humidityLabel.text = "\(Int(weather.humidity))%"
+        humidityLabel.text = "\(weather.humidity)%"
         tempLabel.text = "\(Int(weather.temp))°"
         weatherLabel.text = weather.weather
         lat = weather.lat

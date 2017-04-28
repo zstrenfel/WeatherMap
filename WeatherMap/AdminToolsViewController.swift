@@ -10,24 +10,21 @@ import UIKit
 import CoreData
 
 class AdminToolsViewController: UIViewController {
-    
     //MARK: - Properties
     @IBOutlet weak var deleteHistoryButton: UIButton!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     //MARK: - Actions
-
+    
+    //Make it easier to clear all of core data
     @IBAction func deleteHistory(_ sender: UIButton) {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "WeatherHistory")
         let request = NSBatchDeleteRequest(fetchRequest: fetch)

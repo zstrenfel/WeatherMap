@@ -9,6 +9,7 @@
 import Foundation
 import MapKit
 
+//Class that extends MKAnnotation to be used as annotations for the MapView
 class WeatherLocation: NSObject, MKAnnotation {
     
     //MARK: - Properties

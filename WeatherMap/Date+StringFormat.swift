@@ -8,6 +8,10 @@
 
 import Foundation
 
+/**
+ * Decided to create an extension of date as these functions were being used quiet
+ * often, and I would rather they not clutter up other controllers. 
+ */
 extension Date {
     var dateString: String {
         let formatter = DateFormatter()
